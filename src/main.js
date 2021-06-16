@@ -11,7 +11,7 @@ Vue.use(ElementUI);
 Vue.mixin({
   data(){
     return{
-      urls:'http://127.0.0.1:3000/'
+      urls:'http://192.168.110.131/'
     }
   }
 })

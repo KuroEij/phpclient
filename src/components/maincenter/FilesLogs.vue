@@ -18,5 +18,13 @@ export default {
       ],
     };
   },
+  mounted(){
+      // this.id = this.$route.params.id.join(',')
+      // console.log(this.$route.params)
+      this.$axios(`${this.urls}heartlogs`).then(res=>{
+      console.log(res)
+      this.tableData.push({})
+    })
+  }
 };
 </script>

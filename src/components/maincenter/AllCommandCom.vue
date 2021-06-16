@@ -5,21 +5,21 @@
           <p>Address:</p>
       </div>
       <template>
-        <el-button
+        <!-- <el-button
           size="mini"
           type="danger"
           round
           @click="handleEdit()"
           >Shutdown</el-button
-        >
-        <el-button
+        > -->
+        <!-- <el-button
           size="mini"
           type="primary"
           @click="handleDelete()"
           round
           >All Downloads</el-button
-        >
-        <el-button
+        > -->
+        <!-- <el-button
           size="mini"
           type="warning"
           @click="handleEdit()"
@@ -38,7 +38,7 @@
           @click="handleEdit()"
           round
           >Access Log</el-button
-        >
+        > -->
       </template>
       <router-view></router-view>
   </div>
@@ -51,7 +51,7 @@ export default {
     };
   },
   mounted(){
-      this.id = this.$route.params.id.join(',')
+      this.id = this.$route.query.id.join(',')
       console.log(this.$route.params)
   }
 };

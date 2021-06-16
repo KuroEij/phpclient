@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import ClientList from '../components/maincenter/MainActionCom.vue'
 import CommandLogs from '../components/maincenter/CommandLogs.vue'
+import FileManager from '../components/maincenter/FilesManaged.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,7 +13,7 @@ const routes = [
   },
   {
     path: '/fileslogs',
-    name: 'FilesLogs',
+    name: 'fileslogs',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -29,12 +30,12 @@ const routes = [
         name:"logs",
         component:CommandLogs
       },
-      {
-        path:'file',
-        name:"file",
-        component:CommandLogs
-      }
     ]
+  },
+  {
+    path:'/file',
+    name:"file",
+    component:FileManager
   }
 ]
 
