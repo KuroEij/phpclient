@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     getFileList() {
-      this.$axios(`${this.urls}client?ls_dir=/etc&id=${this.id}`).then((res) => {
+      this.$axios.get(`${this.urls}client?ls_dir=/etc&id=${this.id}`).then((res) => {
         console.log(res)
         this.tableData.push({})
       })
@@ -29,9 +29,10 @@ export default {
         console.log(event)
         this.file = event.target.files[0]
         this.fileName = this.file.name
+        this.upload()
     },
     upload(){
-      this.$axios(`${this.urls}client?ls_dir=/etc&id=${this.id}`).then((res) => {
+      this.$axios.get(`${this.urls}client?up_filename=${this.fileName}&id=${this.id}`).then((res) => {
         console.log(res)
         this.tableData.push({})
       })

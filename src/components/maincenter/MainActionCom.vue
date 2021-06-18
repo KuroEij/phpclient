@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:100%">
     <el-table :data="tableData"
               height="100%"
               border
@@ -8,34 +8,31 @@
       <el-table-column type="selection"
                        width="55"> </el-table-column>
       <el-table-column prop="id"
-                       label="id"> </el-table-column>
+                       label="id" width="150"> </el-table-column>
       <el-table-column prop="sessionid"
-                       label="sessionid"
-                       width="150">
+                       label="sessionid">
       </el-table-column>
-      <el-table-column prop="Ipaddress"
-                       label="Ip address"
-                       width="100">
+      <el-table-column prop="remoteip"
+                       label="remoteip">
       </el-table-column>
-      <el-table-column prop="hostname"
-                       label="hostname"
-                       width="100">
+      <el-table-column prop="sessionid"
+                       label="sessionid">
       </el-table-column>
       <el-table-column prop="Time"
                        label="操作">
         <template slot-scope="scope">
-          <el-button size="mini"
+          <!-- <el-button size="mini"
                      type="danger"
                      round
-                     @click="shutdown(scope.$index, scope.row)">SHUTDOWN</el-button>
+                     @click="shutdown(scope.$index, scope.row)">SHUTDOWN</el-button> -->
           <el-button size="mini"
                      type="primary"
                      @click="singleToShell(scope.$index, scope.row)"
-                     round>Shell</el-button>
+                     round>命令執行</el-button>
           <el-button size="mini"
                      type="warning"
                      @click="singleToFile(scope.$index, scope.row)"
-                     round>files</el-button>
+                     round>文件管理</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +41,7 @@
                size="large"
                type="warning"
                @click="goAllAction"
-               round>go to shell</el-button>
+               round>勾选客户端执行命令</el-button>
   </div>
 </template>
 <script>
@@ -52,12 +49,6 @@ export default {
   data() {
     return {
       tableData: [
-        {
-          id: 'http://192.168.43.146:8080/',
-          sessionid: 'active',
-          Ipaddress: '2016-05-03',
-          hostname: '22',
-        },
       ],
       isAllShellButtonShow: false,
       multipleSelection: '',
@@ -116,9 +107,9 @@ export default {
     },
   },
   mounted() {
-    this.$axios(`${this.urls}client`).then((res) => {
+    this.$axios.get(`${this.urls}list_clients`).then((res) => {
       console.log(res)
-      this.tableData.push({})
+      this.tableData = res.data
     })
   },
 }

@@ -4,18 +4,19 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from "./router"
 import axios from 'axios'
-
+import {saveAs} from "filesaver.js-npm"
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.mixin({
   data(){
     return{
-      urls:'http://192.168.110.131/'
+      urls:'/'
     }
   }
 })
 Vue.prototype.$axios = axios
+Vue.prototype.$saveAs = saveAs
 new Vue({
   router,
   render: h => h(App),
