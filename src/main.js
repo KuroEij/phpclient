@@ -17,7 +17,8 @@ Vue.mixin({
 })
 Vue.prototype.$axios = axios
 Vue.prototype.$saveAs = saveAs
-new Vue({
+window.app =new Vue({
   router,
   render: h => h(App),
 }).$mount('#app')
+// console.log(app)

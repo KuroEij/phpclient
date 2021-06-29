@@ -3,21 +3,24 @@ import VueRouter from 'vue-router'
 import ClientList from '../components/maincenter/MainActionCom.vue'
 import CommandLogs from '../components/maincenter/CommandLogs.vue'
 import FileManager from '../components/maincenter/FilesManaged.vue'
+import FilesLogs from '../components/maincenter/FilesLogs.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'clientlist',
-    component: ClientList
+    name: 'app',
+    redirect:'/clientlist'
   },
   {
     path: '/fileslogs',
     name: 'fileslogs',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../components/maincenter/FilesLogs.vue')
+    component: FilesLogs
+  },
+  {
+    path: '/clientlist',
+    name: 'clientlist',
+    component: ClientList
   },
   {
     path:'/allcommand',

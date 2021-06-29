@@ -2,24 +2,20 @@
   <div id="app">
     <el-container style="height:100vh">
       <el-header style="height:40px;"></el-header>
-    <!-- <el-container><MainCom></MainCom></el-container> -->
       <el-container>
         <el-aside width="200px"><AsideComLeft></AsideComLeft></el-aside>
         <el-main style="padding:0px;">
           <router-view></router-view>
         </el-main>
       </el-container>
-      <!-- <el-footer></el-footer> -->
     </el-container>
   </div>
 </template>
 
 <script>
 import AsideComLeft from './components/AsideComLeft.vue';
-// import HeartbeatLogs from './components/maincenter/HeartbeatLogs.vue'
-// import MainCom from './components/maincenter/MainActionCom.vue';
 export default {
-  name: "App",
+  name: 'App',
   components: {
     AsideComLeft
     // HeartbeatLogs

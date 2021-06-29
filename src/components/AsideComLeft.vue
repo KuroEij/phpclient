@@ -1,15 +1,15 @@
 <template>
   <el-menu
-    default-active="/" 
+    :default-active="this.$route.path" 
     class="el-menu-vertical-demo"
     @open="handleOpen"
     @close="handleClose"
     background-color="#545c64"
-    :router="true"
+    router
     text-color="#fff"
     active-text-color="#ffd04b"
   >
-    <el-menu-item index="/" >
+    <el-menu-item index="/clientlist" >
       <i class="el-icon-setting"></i>
       <span slot="title">Client List</span>
     </el-menu-item>

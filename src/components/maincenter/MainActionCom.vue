@@ -4,13 +4,14 @@
               height="100%"
               border
               style="width: 100%"
+              v-loading="loading"
               @selection-change="handleSelectionChange">>
       <el-table-column type="selection"
                        width="55"> </el-table-column>
       <el-table-column prop="id"
                        label="id" width="150"> </el-table-column>
-      <el-table-column prop="sessionid"
-                       label="sessionid">
+      <el-table-column prop="hostname"
+                       label="hostname">
       </el-table-column>
       <el-table-column prop="remoteip"
                        label="remoteip">
@@ -21,10 +22,6 @@
       <el-table-column prop="Time"
                        label="操作">
         <template slot-scope="scope">
-          <!-- <el-button size="mini"
-                     type="danger"
-                     round
-                     @click="shutdown(scope.$index, scope.row)">SHUTDOWN</el-button> -->
           <el-button size="mini"
                      type="primary"
                      @click="singleToShell(scope.$index, scope.row)"
@@ -46,8 +43,10 @@
 </template>
 <script>
 export default {
+  name:"clientlist",
   data() {
     return {
+      loading:true,
       tableData: [
       ],
       isAllShellButtonShow: false,
@@ -65,33 +64,15 @@ export default {
   },
   methods: {
     handleEdit() {},
-    shutdown(index, row) {
-      this.$axios
-        .get(`${this.urls}`, {
-          cmd: 'shutdown',
-          idL: row.id,
-        })
-        .then((res) => {
-          if (res) {
-            this.$message({
-              message: '提交成功',
-              type: 'success',
-            })
-          } else {
-            this.$message.error('提交失败')
-          }
-        })
-    },
-    handleDelete() {},
     //跳转单机控制台
     singleToShell(index, row) {
       console.log(index)
-      this.$router.push({ path: '/allcommand/logs', query: { id: [row.id] } })
+      this.$router.push({ path: '/allcommand/logs', query: { id: [row.id],ip:[row.remoteip] } })
     },
     //跳转文件管理
     singleToFile(index, row) {
       console.log(index)
-      this.$router.push({ path: '/file', query: { id: [row.id] } })
+      this.$router.push({ path: '/file', query: { id: row.id,ip:row.remoteip } })
     },
     handleSelectionChange(val) {
       console.log(val)
@@ -99,18 +80,23 @@ export default {
     },
     //跳转多客户端控制台
     goAllAction() {
-      let id = []
+      let id = [],
+          ip = [];
       this.multipleSelection.forEach((item) => {
         id.push(item.id)
+        ip.push(item.remoteip)
       })
-      this.$router.push({ path: '/allcommand/logs', query: { id } })
+      this.$router.push({ path: '/allcommand/logs', query: { id,ip } })
     },
+    goherts(){
+      this.$router.push({ path: '/fileslogs'})
+    }
   },
   mounted() {
     this.$axios.get(`${this.urls}list_clients`).then((res) => {
-      console.log(res)
       this.tableData = res.data
-    })
+      this.loading = false
+    }).catch(()=>this.loading = false)
   },
 }
 </script>
