@@ -2,12 +2,22 @@
 .command-main {
   width: 100%;
   .content-bd {
+    overflow: auto;
+    white-space:pre-wrap;
     height: 50vh;
     margin-top: 20px;
     background: black;
     color: white;
     text-align: left;
     padding: 10px;
+  }
+  .content-bd::-webkit-scrollbar {
+    width: 8px;
+  }
+  .content-bd::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px #ccc;
+    background: #ccc;
   }
   input {
     border: 1px slode #ccc;
@@ -22,9 +32,12 @@
   <div class="command-main">
     <div class="content-bd"
          disabled>{{content}}</div>
-    <input placeholder="输入命令行"
+         <div>    <input placeholder="输入命令行"
            v-model="pacl"
            @keydown.enter="exictCommand" />
+           <el-button style="margin-left:10px;" @click="exictCommand" size="mini"
+                 type="warning">执行</el-button></div>
+
   </div>
 </template>
 <script>
@@ -46,9 +59,17 @@ export default {
   methods: {
     exictCommand() {
       this.$axios
-        .get(`${this.urls}client?cmd=${this.pacl}&id=${this.id}`)
+        .get(`${this.urls}client?cmd=${this.pacl}&${this.$route.query.id.length>1?'ids':'id'}=${this.id}`)
         .then((res) => {
-          this.content = res.data[this.ip]
+          if(this.$route.query.id.length>1){
+            this.content = ''
+            res.data.forEach(item => {
+              this.content += JSON.parse(item).data
+            });
+          }else{
+            this.content = res.data.data
+          }
+          
         })
     },
   },

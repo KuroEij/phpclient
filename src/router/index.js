@@ -13,8 +13,8 @@ const routes = [
     redirect:'/clientlist'
   },
   {
-    path: '/fileslogs',
-    name: 'fileslogs',
+    path: '/heartlogs',
+    name: 'heartlogs',
     component: FilesLogs
   },
   {

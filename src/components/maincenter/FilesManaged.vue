@@ -14,6 +14,7 @@
   input {
     border: 1px solid #ccc;
     margin-left: 10px;
+    margin-right: 10px;
     height: 30px;
   }
 }
@@ -25,8 +26,8 @@
     text-align: left;
     margin-left: 20px;
     margin-top: 10px;
-    i{
-      margin-right:10px;
+    i {
+      margin-right: 10px;
     }
   }
 }
@@ -53,25 +54,33 @@
                  round>upload
       </el-button>
     </div>
-    <div style="">
-      <p>当前目录:</p><input @keydown.enter="exictCommand"
+    <div class="fileMana-dir">
+      <p>当前目录:</p>
+       <form action="" id="form">
+      <input @keydown.enter="exictCommand"
              v-model="fileName" />
+       </form>
+      <el-button size="mini"
+                 type="warning"
+                 @click="exictCommand"
+                 round>
+        检索
+      </el-button>
     </div>
     <div class="file-main">
       <div class="file-item"
            v-for="(item,index) in filelist"
            :key="index"
-           @click="clickFile(item,index)"><i
-           v-show="index>3&&item.substr(0,1) == 'd'"
+           @click="clickFile(item,index)"><i v-show="index>3&&item.substr(0,1) == 'd'"
            class="el-icon-message"></i>
-        <i
-           v-show="index>3&&item&&item.substr(0,1) != 'd'"
+        <i v-show="index>3&&item&&item.substr(0,1) != 'd'"
            class="el-icon-tickets"></i>{{item}}
       </div>
     </div>
   </div>
 </template>
 <script>
+// import qs from 'qs'
 export default {
   name: 'file',
   data() {
@@ -95,10 +104,8 @@ export default {
       this.$axios
         .get(`${this.urls}client?ls_dir=/${this.fileName}&id=${this.id}`)
         .then((res) => {
-          console.log(res.data)
-          console.log(res.data[this.ip])
           this.loading = false
-          this.filelist = res.data[this.ip].split('\n')
+          this.filelist = res.data.data.split('\n')
         })
         .catch(() => (this.loading = false))
     },
@@ -116,24 +123,36 @@ export default {
         })
         return
       }
-      this.$axios
-        .get(
-          `${this.urls}client?up_filename=/${
-            this.fixFileUrl + '/' + this.uploadFileName
-          }&id=${this.id}`
-        )
-        .then((res) => {
-          this.$refs.uploadinput.value = ''
-          this.$message({
-            message: '上传成功！',
-            type: 'success',
-          })
-          this.getFileList()
-          console.log(res)
+      if(!this.file){
+        this.$message({
+          message: '请选中要上传的文件！',
+          type: 'warning',
         })
-        .catch(() => {
-          this.$message.error('上传失败！，请重试。')
-        })
+        return        
+      }
+      var formData = new FormData();
+      // 上传的文件
+      formData.append('file', this.file);
+      var xhr = new XMLHttpRequest();
+      xhr.open("post", `${this.urls}client?up_filename=${this.uploadFileName}&id=${this.id}`);
+
+      xhr.send(formData);
+      xhr.onload = () =>{
+        if(xhr.status == 200) {
+          if(xhr.responseText == "success"){
+            this.$refs.uploadinput.value = ''
+            this.file = ''
+            this.uploadFileName = ''
+            this.$message({
+              message: '上传成功！',
+              type: 'success',
+            })
+            this.getFileList()
+          }else{
+            this.$message.error('上传失败！，请重试。')
+          }
+        }
+      }
     },
     exictCommand() {
       this.fixFileUrl = ''
@@ -163,7 +182,7 @@ export default {
         )
         .then((res) => {
           console.log(res)
-          this.$saveAs(new Blob([res.data]), fileName)
+          this.$saveAs(new Blob([res.data]), fileName+'.bin')
           this.loading = false
         })
         .catch(() => (this.loading = false))

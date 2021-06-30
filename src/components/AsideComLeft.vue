@@ -13,7 +13,7 @@
       <i class="el-icon-setting"></i>
       <span slot="title">Client List</span>
     </el-menu-item>
-    <el-menu-item index="/fileslogs">
+    <el-menu-item index="/heartlogs">
       <i class="el-icon-setting"></i>
       <span slot="title">Heartbeat Logs</span>
     </el-menu-item>
