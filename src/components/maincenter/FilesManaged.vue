@@ -129,7 +129,7 @@ export default {
         if (!fileArray.length) return
         let fileName = fileArray[fileArray.length - 1]
         if (!fileName) return
-        fileName = (this.fixFileUrl=='/'?'':'/')+ fileName
+        fileName = `${this.fixFileUrl}${this.fixFileUrl=='/'?'':'/'}${fileName}`
         delteFiles.push(fileName)
       })
       let paramFiles = delteFiles.join(',')

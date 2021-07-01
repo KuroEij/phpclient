@@ -22,7 +22,7 @@ export default {
   mounted(){
       this.$axios.get(`${this.urls}heartlogs`).then(res=>{
         this.tableData = []
-        let time = new Date().getTime
+        let time = new Date().getTime()
         if(res.data == "No alive agents.")
           return
         for(let key in res.data){
