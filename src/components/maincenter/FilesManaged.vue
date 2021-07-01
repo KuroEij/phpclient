@@ -74,14 +74,16 @@
     </div>
     <div class="file-main">
       <div v-show="filelist.length>3">
-        <el-checkbox
-                    style="margin-right:20px;"
-                    :indeterminate="isIndeterminate"
-                    v-model="checkAll"
-                    @change="handleCheckAllChange">全选</el-checkbox>
-        <el-button v-show="checkList.length>0" size="mini" type="danger" @click="deleteFiles">删除</el-button>
+        <el-checkbox style="margin-right:20px;"
+                     :indeterminate="isIndeterminate"
+                     v-model="checkAll"
+                     @change="handleCheckAllChange">全选</el-checkbox>
+        <el-button v-show="checkList.length>0"
+                   size="mini"
+                   type="danger"
+                   @click="deleteFiles">删除</el-button>
       </div>
-      <el-checkbox-group  v-model="checkList">
+      <el-checkbox-group v-model="checkList">
         <div class="file-item"
              v-for="(item,index) in filelist"
              :key="index">
@@ -119,34 +121,37 @@ export default {
   },
   computed: {},
   methods: {
-    deleteFiles(){
+    deleteFiles() {
       this.loading = true
       let delteFiles = []
-      this.checkList.forEach(item=>{
+      this.checkList.forEach((item) => {
         let fileArray = item.split(' ')
         if (!fileArray.length) return
         let fileName = fileArray[fileArray.length - 1]
         if (!fileName) return
-        fileName = this.fixFileUrl +'/'+fileName
+        fileName = (this.fixFileUrl=='/'?'':'/')+ fileName
         delteFiles.push(fileName)
       })
       let paramFiles = delteFiles.join(',')
-      this.$axios.get(`${this.urls}delete_files?files=${paramFiles}&id=${this.id}`).then(res=>{
-        console.log(res)
-        if(res.data =="success"){
+      this.$axios
+        .get(`${this.urls}delete_files?files=${paramFiles}&id=${this.id}`)
+        .then((res) => {
+          console.log(res)
+          if (res.data == 'success') {
+            this.loading = false
+            this.$message({
+              message: '删除成功！',
+              type: 'success',
+            })
+            this.checkList = []
+            // this.getFileList()
+          }
+        })
+        .catch((err) => {
+          console.log(err)
           this.loading = false
-              this.$message({
-                message: '删除成功！',
-                type: 'success',
-              })
-          this.checkList = []
-          // this.getFileList()
-        }
-      }).catch(err=>{
-        console.log(err)
-        this.loading = false
-        this.$message.error('删除失败!请重试。')
-      })
+          this.$message.error('删除失败!请重试。')
+        })
     },
     handleCheckAllChange(val) {
       this.checkList = val ? this.filelist : []
@@ -233,7 +238,7 @@ export default {
         if (!fileArray.length) return
         let fileName = fileArray[fileArray.length - 1]
         if (!fileName) return
-        this.fileName = `${this.fileName}/${fileName}`
+        this.fileName = `${this.fileName}${this.fileName=='/'?'':'/'}${fileName}`
         this.getFileList()
       } else if (index > 3 && file && file.substr(0, 1) != 'd') {
         this.downLoadFile(file)
@@ -247,14 +252,21 @@ export default {
       this.loading = true
       this.$axios
         .get(
-          `${this.urls}client?down_path=${this.fixFileUrl}/${fileName}&id=${this.id}`
+          `${this.urls}client?down_path=${this.fixFileUrl}${this.fixFileUrl=='/'?'':'/'}${fileName}&id=${this.id}`
         )
         .then((res) => {
           console.log(res)
           this.$saveAs(new Blob([res.data]), fileName)
+          this.$message({
+            message: '下载成功！',
+            type: 'success',
+          })
           this.loading = false
         })
-        .catch(() => (this.loading = false))
+        .catch(() => {
+          this.$message.error('下载超时')
+          this.loading = false
+        })
     },
   },
   mounted() {
