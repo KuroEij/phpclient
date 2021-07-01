@@ -110,7 +110,7 @@ export default {
       ip: '',
       file: '',
       filelist: [],
-      fileName: '/tmp', //文件mulu
+      fileName: '/', //文件mulu
       uploadFileName: '',
       fixFileUrl: '', //记录当前文件目录
       loading: true,
@@ -144,7 +144,7 @@ export default {
               type: 'success',
             })
             this.checkList = []
-            // this.getFileList()
+            this.getFileList()
           }
         })
         .catch((err) => {
@@ -159,8 +159,8 @@ export default {
     },
     //获取文件列表
     getFileList() {
-      this.filelist = []
-      this.fixFileUrl = this.fileName
+      this.filelist = [] //清空列表
+      this.fixFileUrl = this.fileName //获取目录
       this.loading = true
       this.$axios
         .get(`${this.urls}client?ls_dir=${this.fileName}&id=${this.id}`)
@@ -220,7 +220,7 @@ export default {
               message: '上传成功！',
               type: 'success',
             })
-            // this.getFileList()
+            this.getFileList()
           } else {
             this.loading = false
             this.$message.error('上传失败！请重试。')
@@ -252,11 +252,11 @@ export default {
       this.loading = true
       this.$axios
         .get(
-          `${this.urls}client?down_path=${this.fixFileUrl}${this.fixFileUrl=='/'?'':'/'}${fileName}&id=${this.id}`
+          `${this.urls}client?down_path=${this.fixFileUrl}${this.fixFileUrl=='/'?'':'/'}${fileName}&id=${this.id}`,{responseType:'blob'}
         )
         .then((res) => {
           console.log(res)
-          this.$saveAs(new Blob([res.data]), fileName)
+          this.$saveAs(res.data, fileName)
           this.$message({
             message: '下载成功！',
             type: 'success',
