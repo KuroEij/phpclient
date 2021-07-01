@@ -111,7 +111,7 @@ export default {
               message: '删除成功！',
               type: 'success',
             })
-        // this.getClientsList()
+        this.getClientsList()
         this.loading = false
       }).catch(()=>{
             this.$message({

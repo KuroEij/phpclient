@@ -27,7 +27,7 @@ export default {
           return
         for(let key in res.data){
           let Time  = getDateByTime(res.data[key]*1000);
-          let Status = res.data[key]*1000 < time + 60 ?'丢失':"存活"
+          let Status = res.data[key]*1000 < (time + 60000 )?'丢失':"存活"
           this.tableData.push({IP:key,Time,Status})
         }
         this.loading = false

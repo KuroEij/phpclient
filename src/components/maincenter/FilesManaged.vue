@@ -106,9 +106,9 @@ export default {
     return {
       id: '',
       ip: '',
-      file: {},
+      file: '',
       filelist: [],
-      fileName: '/', //文件mulu
+      fileName: '/tmp', //文件mulu
       uploadFileName: '',
       fixFileUrl: '', //记录当前文件目录
       loading: true,
@@ -140,7 +140,7 @@ export default {
                 type: 'success',
               })
           this.checkList = []
-          this.getFileList()
+          // this.getFileList()
         }
       }).catch(err=>{
         console.log(err)
@@ -203,18 +203,21 @@ export default {
       )
 
       xhr.send(formData)
+      this.loading = true
       xhr.onload = () => {
         if (xhr.status == 200) {
           if (xhr.responseText == 'success') {
             this.$refs.uploadinput.value = ''
             this.file = ''
             this.uploadFileName = ''
+            this.loading = false
             this.$message({
               message: '上传成功！',
               type: 'success',
             })
             // this.getFileList()
           } else {
+            this.loading = false
             this.$message.error('上传失败！请重试。')
           }
         }
@@ -248,7 +251,7 @@ export default {
         )
         .then((res) => {
           console.log(res)
-          this.$saveAs(new Blob([res.data]), fileName + '.bin')
+          this.$saveAs(new Blob([res.data]), fileName)
           this.loading = false
         })
         .catch(() => (this.loading = false))
