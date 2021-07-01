@@ -33,12 +33,20 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button style="position: fixed; bottom: 40px"
-               v-show="isAllShellButtonShow"
-               size="large"
-               type="warning"
-               @click="goAllAction"
-               round>勾选客户端执行命令</el-button>
+    <div style="position: fixed; bottom: 70px;left:calc(50% - 144px)">
+      <el-button 
+                v-show="isAllShellButtonShow"
+                size="large"
+                type="warning"
+                @click="goAllAction"
+                round>勾选客户端执行命令</el-button>
+      <el-button 
+                v-show="isAllShellButtonShow"
+                size="large"
+                type="danger"
+                @click="deleteClients"
+                round>勾选删除</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -67,12 +75,12 @@ export default {
     //跳转单机控制台
     singleToShell(index, row) {
       console.log(index)
-      this.$router.push({ path: '/allcommand/logs', query: { id: [row.id],ip:[row.remoteip] } })
+      this.$router.push({ path: '/home/allcommand/logs', query: { id: [row.id],ip:[row.remoteip] } })
     },
     //跳转文件管理
     singleToFile(index, row) {
       console.log(index)
-      this.$router.push({ path: '/file', query: { id: row.id,ip:row.remoteip } })
+      this.$router.push({ path: '/home/file', query: { id: row.id,ip:row.remoteip } })
     },
     handleSelectionChange(val) {
       console.log(val)
@@ -86,17 +94,46 @@ export default {
         id.push(item.id)
         ip.push(item.remoteip)
       })
-      this.$router.push({ path: '/allcommand/logs', query: { id,ip } })
+      this.$router.push({ path: '/home/allcommand/logs', query: { id,ip } })
+    },
+    //删除多个客户端
+    deleteClients(){
+      let id = [],ids;
+      this.multipleSelection.forEach((item) => {
+        id.push(item.id)
+      })
+      ids = id.join(',')
+
+      this.loading = true
+      this.$axios.get(`${this.urls}delete_clients?ids=${ids}`).then((res)=>{
+          console.log(res)
+            this.$message({
+              message: '删除成功！',
+              type: 'success',
+            })
+        // this.getClientsList()
+        this.loading = false
+      }).catch(()=>{
+            this.$message({
+              message: '删除失败！',
+              type: 'success',
+            })
+            this.loading = false
+      })
     },
     goherts(){
-      this.$router.push({ path: '/fileslogs'})
-    }
-  },
-  mounted() {
+      this.$router.push({ path: '/home/fileslogs'})
+    },
+    //获取客户端列表
+    getClientsList(){
     this.$axios.get(`${this.urls}list_clients`).then((res) => {
       this.tableData = res.data
       this.loading = false
     }).catch(()=>this.loading = false)
+    }
+  },
+  mounted() {
+    this.getClientsList()
   },
 }
 </script>

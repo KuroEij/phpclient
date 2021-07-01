@@ -4,42 +4,58 @@ import ClientList from '../components/maincenter/MainActionCom.vue'
 import CommandLogs from '../components/maincenter/CommandLogs.vue'
 import FileManager from '../components/maincenter/FilesManaged.vue'
 import FilesLogs from '../components/maincenter/FilesLogs.vue'
+import Login from '../components/login.vue'
+import MainBody from '../components/MainBody.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'app',
-    redirect:'/clientlist'
+    redirect:'/login'
   },
   {
-    path: '/heartlogs',
-    name: 'heartlogs',
-    component: FilesLogs
+    path: '/login',
+    name: 'login',
+    component:Login
   },
   {
-    path: '/clientlist',
-    name: 'clientlist',
-    component: ClientList
+    
+      path: '/home',
+      name: 'mainbody',
+      component: MainBody,
+      redirect:'/home/clientlist',
+      children:[
+        {
+          path: 'heartlogs',
+          name: 'heartlogs',
+          component: FilesLogs
+        },
+        {
+          path: 'clientlist',
+          name: 'clientlist',
+          component: ClientList
+        },
+        {
+          path:'allcommand',
+          name:'allcommand',
+          component:() =>import('../components/maincenter/AllCommandCom.vue'),
+          redirect:'/allcommand/logs',
+          children:[
+            {
+              path:'logs',
+              name:"logs",
+              component:CommandLogs
+            },
+          ]
+        },
+        {
+          path:'file',
+          name:"file",
+          component:FileManager
+        }
+      ]
   },
-  {
-    path:'/allcommand',
-    name:'allcommand',
-    component:() =>import('../components/maincenter/AllCommandCom.vue'),
-    redirect:'/allcommand/logs',
-    children:[
-      {
-        path:'logs',
-        name:"logs",
-        component:CommandLogs
-      },
-    ]
-  },
-  {
-    path:'/file',
-    name:"file",
-    component:FileManager
-  }
+
 ]
 
 const router = new VueRouter({

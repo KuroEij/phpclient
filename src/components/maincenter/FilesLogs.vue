@@ -1,8 +1,8 @@
 <template>
   <el-table v-loading="loading" :data="tableData" height="100%" border style="width: 100%">
     <el-table-column prop="IP" label="IP"> </el-table-column>
-    <el-table-column prop="Status" label="Status" width="180"> </el-table-column>
-    <el-table-column prop="Time" label="Time"  width="180"> </el-table-column>
+    <el-table-column prop="Status" label="Status" > </el-table-column>
+    <el-table-column prop="Time" label="Time"> </el-table-column>
   </el-table>
 </template>
 <script>

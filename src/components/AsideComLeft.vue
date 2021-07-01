@@ -9,11 +9,11 @@
     text-color="#fff"
     active-text-color="#ffd04b"
   >
-    <el-menu-item index="/clientlist" >
+    <el-menu-item index="/home/clientlist" >
       <i class="el-icon-setting"></i>
       <span slot="title">Client List</span>
     </el-menu-item>
-    <el-menu-item index="/heartlogs">
+    <el-menu-item index="/home/heartlogs">
       <i class="el-icon-setting"></i>
       <span slot="title">Heartbeat Logs</span>
     </el-menu-item>

@@ -19,7 +19,22 @@ module.exports = {
         target: 'http://47.99.52.159',
         ws: true, 
         changeOrigin: true 
-      },      
+      },
+      '/delete_clients':{
+        target: 'http://47.99.52.159',
+        ws: true, 
+        changeOrigin: true 
+      },    
+      '/delete_files':{
+        target: 'http://47.99.52.159',
+        ws: true, 
+        changeOrigin: true 
+      },   
+      '/login':{
+        target: 'http://47.99.52.159',
+        ws: true, 
+        changeOrigin: true 
+      }, 
     }
   },
   pluginOptions: {
