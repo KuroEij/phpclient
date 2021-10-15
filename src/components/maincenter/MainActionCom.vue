@@ -139,16 +139,30 @@ export default {
         return;
       }
       this.loading = true;
+      let timeout = setTimeout(()=>{
+        if(this.loading == false) return
+          this.loading = false;
+          this.dialogVisible = false;
+          this.ipValue = "";
+          this.$message({
+            message: "升级成功,如果客户端列表未更新请刷新浏览器！",
+            type: "success",
+          });
+          this.getClientsList()
+      },10000)
       this.$axios
         .get(`${this.urls}client?id=${this.currentSelected.id}&serip=${this.ipValue}`)
         .then((res) => {
           console.log(res);
+          if(this.loading == false) return
+          clearTimeout(timeout)
           this.$message({
-            message: "升级成功！",
+            message: "升级成功,如果客户端列表未更新请刷新浏览器！",
             type: "success",
           });
           this.loading = false;
           this.ipValue = "";
+          this.getClientsList()
           this.dialogVisible = false;
         })
         .catch(() => {
