@@ -48,9 +48,16 @@
   <div v-loading="loading"
        class="fileMana-main">
     <div>
+      <label style="position: absolute;
+    background: white;
+    width: 255px;
+    height: 30px;
+    line-height: 30px;" for="uploadinput">Choose file to upload</label>
       <input type="file"
              ref="uploadinput"
+             id="uploadinput"
              :multiple="true"
+             style="pacity:0;"
              @change="getFile($event)" />
       <el-button size="mini"
                  type="warning"
